@@ -1,0 +1,133 @@
+{% extends 'layout.html' %}
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block content %}
+   <div class="container-fluid" style="overflow-x:auto;">
+        <table class="table table-bordered" id="headerTable">
+        <thead>
+          <tr style="background-color: #E5E4E2;">
+            <th scope="col">Count</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Middle Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Birth Date</th>
+            <th scope="col">Age</th>
+            <th scope="col">Weight</th>
+            <th scope="col">Height</th>
+            <th scope="col">Purok / Street</th>
+            <th scope="col">Barangay</th>
+            <th scope="col">Municipality</th>
+            <th scope="col">Province</th>
+            <th scope="col">Ethnicity / Tribe</th>
+            <th scope="col">Skill</th>
+            <th scope="col">Highest Educational Attainment</th>
+            <th scope="col">Year Graduated</th>
+            <th scope="col">Degree / Course</th>
+            <th scope="col">Eligibility (if any)</th>
+            <th scope="col">School Graduated</th>
+            <th scope="col">Mobile Number</th>
+            <th scope="col">E-mail Address</th>
+            <th scope="col">AFPSAT Raw Score</th>
+            <th scope="col">Date Taken</th>
+            <th scope="col">Occupation</th>
+            <th scope="col">Reason for Application</th>
+            <th scope="col">Tariff Size BDU</th>
+            <th scope="col">Shoes</th>
+            <th scope="col">T-Shirt</th>
+            <th scope="col">Short Pants</th>
+            <th scope="col">Mothers Maiden Name</th>
+            <th scope="col">Fathers Name</th>
+            <th scope="col">Present Address</th>
+            <th scope="col">PSA Birth Certificate</th>
+            <th scope="col">TOR / Diploma</th>
+            <th scope="col">Form 137</th>
+            <th scope="col">Whole Body Picture</th>
+            <th scope="col">Cenomar</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for info in infos %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{info.first_name}}</td>
+            <td>{{info.middle_name}}</td>
+            <td>{{info.last_name}}</td>
+            <td>{{info.birth_date}}</td>
+            <td>{{info.age}}</td>
+            <td>{{info.weight}}</td>
+            <td>{{info.height}}</td>
+            <td>{{info.purok_street}}</td>
+            <td>{{info.brgy}}</td>
+            <td>{{info.municipality}}</td>
+            <td>{{info.province}}</td>
+            <td>{{info.ethnicity}}</td>
+            <td>{{info.skill}}</td>
+            <td>{{info.highest_ed_attainment}}</td>
+            <td>{{info.year_graduated}}</td>
+            <td>{{info.degree_course}}</td>
+            <td>{{info.eligibility}}</td>
+            <td>{{info.school_graduated}}</td>
+            <td>{{info.mobile_num}}</td>
+            <td>{{info.email_add}}</td>
+            <td>{{info.afpsat_score}}</td>
+            <td>{{info.date_taken}}</td>
+            <td>{{info.occupation}}</td>
+            <td>{{info.reason_application}}</td>
+            <td>{{info.tariff}}</td>
+            <td>{{info.shoes_size}}</td>
+            <td>{{info.tshirt_size}}</td>
+            <td>{{info.short_pants}}</td>
+            <td>{{info.mothers_name}}</td>
+            <td>{{info.fathers_name}}</td>
+            <td>{{info.present_add}}</td>
+            <td>{{info.psa_bcert}}</td>
+            <td>{{info.tor}}</td>
+            <td>{{info.form137}}</td>
+            <td>{{info.body_pic}}</td>
+            <td>{{info.cenomar}}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+        <div class="row">
+                <button class="btn btn-primary" onclick="fnExcelReport()">Export</button>
+        </div>
+   </div>
+   <script>
+       function fnExcelReport()
+            {
+                var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
+                var textRange; var j=0;
+                tab = document.getElementById('headerTable'); // id of table
+
+                for(j = 0 ; j < tab.rows.length ; j++) 
+                {     
+                    tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+                    //tab_text=tab_text+"</tr>";
+                }
+
+                tab_text=tab_text+"</table>";
+                tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+                tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+                tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+                var ua = window.navigator.userAgent;
+                var msie = ua.indexOf("MSIE "); 
+
+                if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+                {
+                    txtArea1.document.open("txt/html","replace");
+                    txtArea1.document.write(tab_text);
+                    txtArea1.document.close();
+                    txtArea1.focus(); 
+                    sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+                }  
+                else                 //other browser not tested on IE 11
+                    sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
+
+                return (sa);
+            }
+   </script>
+{% endblock %}

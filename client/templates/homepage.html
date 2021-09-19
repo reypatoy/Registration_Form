@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Home</title>
+</head>
+<body>
+    <div class="container"style="padding: 50px;">
+        <form action="" onsubmit="return validate()" enctype="multipart/form-data" method="POST" class = "border border-1" style="margin-top: 10px; border-radius: 10px;">
+            {% csrf_token %}
+            <div class="container-fluid" style="background-color: #999999; padding: 30px; border-radius: 10px;">
+                <div class="row">
+                    <h5 class="page-header text-center">Application Form for Candidate Soldiers</h5>
+                </div>
+            </div>
+            <div class="container" style="padding: 40px;">
+                <div class = "row" id="error"></div>
+                <div class = "row">
+                    {% if success %}
+                        <div class="alert alert-success">{{success}}</div>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <label  class="col-md-4 col-sm-5 col-form-label">Last Name: </label>
+                            <div class="col-sm-8 col-md-8">
+                                <input type="text" name="last_name" class="form-control lname" id="last_name" required>
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <label  class="col-md-4 col-sm-5 col-form-label">First Name: </label>
+                            <div class="col-sm-8 col-md-8">
+                                <input type="text" name="first_name" class="form-control fname" id="first_name" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <label  class="col-md-4 col-sm-5 col-form-label">Middle Name: </label>
+                            <div class="col-sm-8 col-md-8">
+                                <input type="text" name="middle_name" class="form-control mname" id="middle_name" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col">
+                        <div class="row">
+                            <label  class="col-md-4 col-sm-5 col-form-label">Enlistment Type: </label>
+                            <div class="col-sm-8 col-md-8">
+                                <select id="enlistment_type" class="form-control" name="enlistment_type" required>
+                                    <option value="">Please select...</option>
+                                    <option value="Regular Enlistment">Regular Enlistment</option>
+                                    <option value="Special Enlistment">Special Enlistment</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <label  class="col-md-4 col-sm-5 col-form-label">Date of Birth: </label>
+                            <div class="col-sm-8 col-md-8">
+                                <input type="date" name="birth_date" class="form-control bdate" id="birth_date" onchange="set_age()" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col">
+                        <div class="row">
+                            <label  class="col-md-4 col-sm-5 col-form-label">Age: </label>
+                            <div class="col-sm-8 col-md-8">
+                                <input type="text" name="age" class="form-control age" id="age" style="pointer-events: none;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <label  class="col-md-4 col-sm-5 col-form-label">Weight kg: </label>
+                            <div class="col-sm-8 col-md-8">
+                                <input type="text" name="weight" class="form-control weight" id="weight" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <label  class="col-md-4 col-sm-5 col-form-label">Height cm: </label>
+                            <div class="col-sm-8 col-md-8">
+                                <input type="text" name="height" class="form-control height" id="height" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <center><h5>Home Address:</h5></center>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col">
+                        <div class="row">
+                            <label  class="col-md-4 col-sm-5 col-form-label">Purok / Street: </label>
+                            <div class="col-sm-8 col-md-8">
+                                <input type="text" name="purok_street" class="form-control purok" id="purok_street" required>
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <label  class="col-md-4 col-sm-5 col-form-label">Barangay: </label>
+                            <div class="col-sm-8 col-md-8">
+                                <input type="text" name="brgy" class="form-control brgy" id="brgy" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col">
+                        <div class="row">
+                            <label  class="col-md-4 col-sm-5 col-form-label">Municipality: </label>
+                            <div class="col-sm-8 col-md-8">
+                                <input type="text" name="municipality" class="form-control muni" id="municipality" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <label  class="col-md-4 col-sm-5 col-form-label">Province: </label>
+                            <div class="col-sm-8 col-md-8">
+                                <input type="text" name="province" class="form-control prov" id="province" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">Ethnicity / Tribe: </label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input type="text" name="ethnicity" class="form-control ethn" id="ethnicity" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">Skill: </label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input type="text" name="skill" class="form-control skill" id="skill" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-4 col-form-label">Highest Educational Attainment: </label>
+                                <div class="col-sm-8 col-md-8">
+                                    <select id="highest_ed_attainment" class="form-control" name="highest_ed_attainment" onchange="setCourse(this.value);" required>
+                                        <option value="">Please select...</option>
+                                        <option value="High School/K12 Graduate">High School/K12 Graduate</option>
+                                        <option value="College Level">College Level</option>
+                                        <option value="College Graduate">College Graduate</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-4 col-form-label">Year Graduated: </label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input type="text" name="year_graduated" class="form-control yeargrad" id="year_graduated" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-4 col-form-label">Degree / Course: </label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input type="text" name="degree_course" class="form-control degree" id="degree_course">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">Eligibility (if any): </label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input type="text" name="eligibility" class="form-control eligibility" id="eligibility">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-2 col-sm-5 col-form-label">School Graduated: </label>
+                                <div class="col-sm-8 col-md-10">
+                                    <input type="text" name="school_graduated" class="form-control schoolgrad" id="school_graduated" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">Mobile Number: </label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input type="number" name="mobile_num" class="form-control mnum" id="mobile_num" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">E-mail Address: </label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input type="email" name="email_add" class="form-control emailadd" id="email_add" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">AFPSAT Raw Score: </label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input type="text" name="afpsat_score" class="form-control rawscore" id="afpsat_score" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">Date Taken: </label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input type="date" name="date_taken" class="form-control datetaken" id="date_taken" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-2 col-sm-5 col-form-label">Occupation: </label>
+                                <div class="col-sm-8 col-md-10">
+                                    <input type="text" name="occupation" class="form-control occupation" id="occupation" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-2 col-sm-5 col-form-label">Reason for Application: </label>
+                                <div class="col-sm-8 col-md-10">
+                                    <input type="text" name="reason_application" class="form-control reason" id="reason_application" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">Tariff Size BDU: </label>
+                                <div class="col-sm-8 col-md-8">
+                                        <select id="tariff" class="form-control tariff" name="tariff" required>
+                                            <option value="">Please select...</option>
+                                            <option value="Small Short">Small Short</option>
+                                            <option value="Small Regular">Small Regular</option>
+                                            <option value="Medium Short">Medium Short</option>
+                                            <option value="Medium Regular">Medium Regular</option>
+                                            <option value="Large Short">Large Short</option>
+                                            <option value="Large Regular">Large Regular</option>
+                                        </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">Shoes: </label>
+                                <div class="col-sm-8 col-md-8">
+                                    <select id="shoes_size" class="form-control" name="shoes_size" required>
+                                        <option value="">Please select...</option>
+                                        <option value="6 R">6 R</option>
+                                        <option value="6 W">6 W</option>
+                                        <option value="7 R">7 R</option>
+                                        <option value="7 W">7 W</option>
+                                        <option value="8 R">8 R</option>
+                                        <option value="8 W">8 W</option>
+                                        <option value="9 R">9 R</option>
+                                        <option value="9 W">9 W</option>
+                                        <option value="10 R">10 R</option>
+                                        <option value="10 W">10 W</option>
+                                        <option value="11 R">11 R</option>
+                                        <option value="11 W">11 W</option>
+                                        <option value="12 R">12 R</option>
+                                        <option value="12 W">12 W</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">T-Shirt: </label>
+                                <div class="col-sm-8 col-md-8">
+                                    <select id="tshirt_size" class="form-control" name="tshirt_size" required>
+                                        <option value="">Please select...</option>
+                                        <option value="XS">XS</option>
+                                        <option value="S">S</option>
+                                        <option value="M">M</option>
+                                        <option value="L">L</option>
+                                        <option value="XL">XL</option>
+                                        <option value="XXL">XXL</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">Short Pants: </label>
+                                <div class="col-sm-8 col-md-8">
+                                    <select id="short_pants" class="form-control" name="short_pants" required>
+                                        <option value="">Please select...</option>
+                                        <option value="XS">XS</option>
+                                        <option value="S">S</option>
+                                        <option value="M">M</option>
+                                        <option value="L">L</option>
+                                        <option value="XL">XL</option>
+                                        <option value="XXL">XXL</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-2 col-sm-5 col-form-label">Mothers Maiden Name: </label>
+                                <div class="col-sm-8 col-md-10">
+                                    <input type="text" name="mothers_name" class="form-control" id="mothers_name" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-2 col-sm-5 col-form-label">Fathers Name: </label>
+                                <div class="col-sm-8 col-md-10">
+                                    <input type="text" name="fathers_name" class="form-control" id="fathers_name" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-2 col-sm-5 col-form-label">Present Address: </label>
+                                <div class="col-sm-8 col-md-10">
+                                    <input type="text" name="present_add" class="form-control" id="present_add" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">PSA Birth Certificate:</label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input type="file" class = "form-control" id="psa_bcert" name="psa_bcert" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">TOR/Diploma:</label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input type="file" class = "form-control" id="tor" name="tor" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">Form 137:</label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input type="file" class = "form-control" id="form137" name="form137" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-4 col-sm-5 col-form-label">Whole Body Picture:</label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input type="file" class = "form-control" id="body_pic" name="body_pic" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;" >
+                        <div class="col">
+                            <div class="row">
+                                <label  class="col-md-2 col-sm-5 col-form-label">Cenomar:</label>
+                                <div class="col-sm-8 col-md-10">
+                                    <input type="file" class = "form-control" id="cenomar" name="cenomar" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row" style="margin-top: 10px;">
+                        <input type="submit" class="btn btn-primary" value = "submit">
+                    </div>
+                </div>
+            </div>   
+        </form> 
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+<script>
+    var age;
+    $(function(){
+        var dtToday = new Date();
+        
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate()-1;
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+        
+        var maxDate= year + '-' + month + '-' + day;
+        $('#birth_date').attr('max', maxDate);
+        var day1 = dtToday.getDate();
+        if(day1 < 10)
+            day1 = '0' + day1.toString();
+        var mDate= year + '-' + month + '-' + day1;
+        $('#date_taken').attr('max', mDate);
+    });
+        function set_age(){
+            let temp_birth_date = $.trim($('#birth_date').val());
+            let birth_date = temp_birth_date.replaceAll("-", "/");
+            let birth_year = birth_date.split("/")[0];
+            let birth_month = birth_date.split("/")[1];
+            let birth_day = birth_date.split("/")[2];
+            let date_now = new Date();
+            let year_now = date_now.getFullYear();
+            let month_now = date_now.getMonth()+1;
+            let day_now = date_now.getDate();
+
+            age = year_now - birth_year;
+            if(birth_month > month_now){
+                age = age-1;
+            }else if(birth_month == month_now){
+                if(birth_day > day_now) age = age-1;
+            }
+            $('#age').val(age);
+        }
+        function setCourse(val){
+            console.log("aaaa",val);
+            if(val == "High School/K12 Graduate"){
+                $('#degree_course').val("");
+                document.getElementById("degree_course").disabled = true;
+                //document.querySelector('#degree_course').setAttribute('style','pointer-events:none');
+            } 
+            else{
+                document.getElementById("degree_course").disabled = false;
+                //document.querySelector('#degree_course').setAttribute('style','pointer-events:auto');
+            }
+        }
+    function validate(){
+            let first_name = $.trim($('#first_name').val());
+            let last_name = $.trim($('#last_name').val());
+            let middle_name = $.trim($('#middle_name').val());
+            let birth_date = $.trim($('#birth_date').val());
+            let age = $.trim($('#age').val());
+            let weight = $.trim($('#weight').val());
+            let height = $.trim($('#height').val());
+            let purok_street = $.trim($('#purok_street').val());
+            let brgy = $.trim($('#brgy').val());
+            let municipality = $.trim($('#municipality').val());
+            let province = $.trim($('#province').val());
+            let ethnicity = $.trim($('#ethnicity').val());
+            let skill = $.trim($('#skill').val());
+            let highest_ed_attainment = $.trim($('#highest_ed_attainment').val());
+            let year_graduated = $.trim($('#year_graduated').val());
+            let degree_course = $.trim($('#degree_course').val());
+            let eligibility = $.trim($('#eligibility').val());
+            let school_graduated = $.trim($('#school_graduated').val());
+            let mobile_num = $.trim($('#mobile_num').val());
+            let email_add = $.trim($('#email_add').val());
+            let afpsat_score = $.trim($('#afpsat_score').val());
+            let date_taken = $.trim($('#date_taken').val());
+            let occupation = $.trim($('#occupation').val());
+            let reason_application = $.trim($('#reason_application').val());
+            let shoes_size = $.trim($('#shoes_size').val());
+            let tshirt_size = $.trim($('#tshirt_size').val());
+            let short_pants = $.trim($('#short_pants').val());
+            let mothers_name = $.trim($('#mothers_name').val());
+            let fathers_name = $.trim($('#fathers_name').val());
+            let present_add = $.trim($('#present_add').val());
+            let psa_bcert = $.trim($('#psa_bcert').val());
+            let tor = $.trim($('#tor').val());
+            let form137 = $.trim($('#form137').val());
+            let body_pic = $.trim($('#body_pic').val());
+            let cenomar = $.trim($('#cenomar').val());
+            let enlistment_type = $.trim($('#enlistment_type').val());
+            let tariff = $.trim($('#tariff').val());
+            
+            if(first_name != "" && last_name != "" && middle_name != "" && birth_date != "" && age != ""
+            && weight != ""  && height != ""  && purok_street != ""  && brgy != ""  && municipality != ""  && province != ""  && ethnicity != ""
+            && skill != ""  && highest_ed_attainment != ""  && year_graduated != ""  && school_graduated != "" 
+            && mobile_num != ""  && email_add != ""  && afpsat_score != ""  && date_taken != ""  && occupation != ""  && reason_application != ""  && shoes_size != ""
+            && tshirt_size != ""  && short_pants != ""  && mothers_name != ""  && fathers_name != ""  && present_add != ""  && psa_bcert != ""  && tor != ""
+            && form137 != "" && body_pic != "" && cenomar != "" && enlistment_type != "" && tariff != "" ){
+                
+                if(highest_ed_attainment != "High School/K12 Graduate"){
+                    if(degree_course != ""){
+                        $('#error').html('');
+                        return true;
+                    }else{
+                        window.scrollTo(0, 0);  
+                        $('#error').html('<div class = "alert alert-danger">Some fields must be filled up</div>');
+                        return false;
+                    }
+                }else {
+                    $('#error').html('');
+                    return true;
+                } 
+            }else{
+                console.log("submit");
+                window.scrollTo(0, 0);
+                $('#error').html('<div class = "alert alert-danger">Some fields must be filled up</div>');
+                return false;
+            }  
+    }
+</script>
+</html>
