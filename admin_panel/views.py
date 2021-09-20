@@ -1,8 +1,10 @@
+from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout,authenticate
 from django.contrib.auth.forms import AuthenticationForm
+from django.http import JsonResponse
 # Create your views here.
 from client.models import  client_info 
 
@@ -57,3 +59,16 @@ def dashboard(request):
 def logout_view(request):
     logout(request)
     return redirect('admin_panel:login_view')
+
+def update_into_generated(request):
+    if request.method == 'POST':
+        ids = request.POST.get("infos")
+        for id in ids:
+            info = client_info.objects.get(id.id)
+            info.status = "Genarated"
+            response = info.save()
+        if response:
+            return HttpResponse("Updated successfully")
+        else:
+            return HttpResponse("Not updated")
+   

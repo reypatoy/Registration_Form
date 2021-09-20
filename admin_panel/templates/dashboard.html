@@ -92,9 +92,12 @@
         </tbody>
       </table>
         <div class="row">
-                <button class="btn btn-primary" onclick="fnExcelReport()">Export</button>
+                <button id="generate" class="btn btn-primary" onclick="fnExcelReport()">Export</button>
         </div>
    </div>
+    <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
    <script>
        function fnExcelReport()
             {
@@ -129,5 +132,20 @@
 
                 return (sa);
             }
+            $("#generate").on('click', function() {
+                var infos = '{{ infos }}';
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'admin_panel:update' %}",
+                    data:{
+                            infos:infos, 
+                    },
+                    datatype:'json',
+                    success: function(data) {
+                    
+                        alert("successfully added to favorites")
+                    }
+                }); 
+            });
    </script>
 {% endblock %}
